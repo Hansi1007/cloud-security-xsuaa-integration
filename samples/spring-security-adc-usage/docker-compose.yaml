@@ -12,5 +12,6 @@ services:
       - "run"
       - "--server"
       - "--log-format=json-pretty"
+      - "--log-level=debug"
       - "--set=decision_logs.console=true"
       - "/policies"

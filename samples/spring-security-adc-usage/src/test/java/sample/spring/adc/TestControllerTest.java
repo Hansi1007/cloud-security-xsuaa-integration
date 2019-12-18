@@ -43,15 +43,6 @@ public class TestControllerTest {
 				.getTokenForAuthorizationHeader();
 	}
 
-	private Map<String, Object> buildSystemAttributesClaim(String... roleCollections) {
-		Map<String, Object> xsSystemAttributesClaim = new HashMap<>();
-		Map<String, Object> xsSystemAttributesClaims = new HashMap<>();
-		xsSystemAttributesClaims.put("xs.rolecollections", roleCollections);
-		xsSystemAttributesClaim.put("xs.system.attributes", xsSystemAttributesClaims);
-//		xsSystemAttributesClaims.put("xs.saml.groups", Collections.singletonList("G1"));
-		return xsSystemAttributesClaim;
-	}
-
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -64,9 +55,16 @@ public class TestControllerTest {
 	}
 
 	@Test
-	public void readWithPermission_200() throws Exception {
+	public void readWithReadPermission_200() throws Exception {
 		mockMvc.perform(get("/v1/method")
 				.with(bearerToken(jwt_viewer)))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void readWithAdminPermission_200() throws Exception {
+		mockMvc.perform(get("/v1/method")
+				.with(bearerToken(jwt_admin)))
 				.andExpect(status().isOk());
 	}
 

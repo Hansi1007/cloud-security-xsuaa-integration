@@ -6,6 +6,9 @@
         ],
         "user/userIdp/Armin": [
             "admin"
+        ],
+        "user/ldap/nena.raab@sap.com": [
+            "read"
         ]
     }
 }

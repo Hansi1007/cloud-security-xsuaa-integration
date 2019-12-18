@@ -98,8 +98,9 @@ Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzMxO
 
 Alternatively you can also debug the [TestControllerTest](src/test/java/sample.spring.adc/TestControllerTest.java) JUnit Test.  
 
-## Cockpit administration tasks: Assign Role to your User
-When accessing your application endpoints on Cloud Foundry via the Application Router, you get redirected to a login-screen to authenticate yourself. But your application will respond with error status code `403` (`unauthorized`) in case you do not have any Roles / Role Collections assigned. 
+## Cockpit administration tasks: Assign Policy to your User
+When accessing your application endpoints on Cloud Foundry via the Application Router, you get redirected to a login-screen to authenticate yourself. 
+But your application will respond with error status code `403` (`unauthorized`) in case you do not have any Policies assigned. 
 That's why you need to assign as part of your Identity Provider, e.g. SAP ID Service the deployed Role Collection(s) such as `Viewer` or `Administrator` to your user as depicted in the screenshot below and as documented [here](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/9e1bf57130ef466e8017eab298b40e5e.html).
 
 ![](../images/SAP_CP_Cockpit_AssignRoleCollectionToUser.png)
