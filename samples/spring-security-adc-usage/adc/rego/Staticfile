@@ -1,3 +1,0 @@
-directory: visible
-root: public
-location_include: includes/*.conf

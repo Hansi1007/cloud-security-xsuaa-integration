@@ -1,0 +1,16 @@
+version: '3.2'
+services:
+  opa:
+    image: openpolicyagent/opa:latest
+    ports:
+      - 8181:8181
+    volumes:
+      - type: bind
+        source: ./src/main/resources
+        target: /policies
+    command:
+      - "run"
+      - "--server"
+      - "--log-format=json-pretty"
+      - "--set=decision_logs.console=true"
+      - "/policies"

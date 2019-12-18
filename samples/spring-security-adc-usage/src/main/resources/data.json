@@ -1,0 +1,11 @@
+{
+    "user2policy": {
+        "user/userIdp/Bobby": [
+            "read",
+            "readAllConfidentialData"
+        ],
+        "user/userIdp/Armin": [
+            "admin"
+        ]
+    }
+}

@@ -6,15 +6,19 @@ applications:
 # The sample application.
 - name: spring-security-adc-usage
   instances: 1
-  memory: 896M
+  memory: 800M
   routes:
     - route: spring-security-adc-usage-((ID)).((LANDSCAPE_APPS_DOMAIN))
   path: target/spring-security-adc-usage.jar
+  buildpacks:
+    - https://github.com/saescha/opa-builpack-PoC.git
+    - java_buildpack
   services:
     - xsuaa-adc
   env:
-    ADC_URL: https://adc-service-((ID)).((LANDSCAPE_APPS_DOMAIN))
-# Application Router as web server
+    JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {headroom: 10}]'
+
+# Application Router as reverse proxy
 - name: approuter-spring-security-adc-usage
   path: approuter
   buildpacks:
@@ -31,14 +35,3 @@ applications:
          "url":"https://spring-security-adc-usage-((ID)).((LANDSCAPE_APPS_DOMAIN))",
          "forwardAuthToken": true}
       ]
-# Authorization Decision Controller service
-- name: adc-service
-  path: adc/rbac
-  memory: 512M
-  routes:
-    - route: adc-service-((ID)).((LANDSCAPE_APPS_DOMAIN))
-  buildpacks:
-    - https://github.com/saescha/opa-builpack-PoC.git
-  # directly uploads bundle
-  command: ./opa run -s -c OPAConfig --log-level=debug --addr=[]:$PORT rbac.rego data.json
-...

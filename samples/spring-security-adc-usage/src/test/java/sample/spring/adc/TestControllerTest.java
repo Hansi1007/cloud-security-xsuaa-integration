@@ -13,7 +13,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
-import org.springframework.util.Assert;
 
 import java.util.*;
 
@@ -27,8 +26,8 @@ public class TestControllerTest {
 
 	private String jwt_viewer;
 	private String jwt_admin;
-	private static final String VIEWER = "viewer";
-	private static final String ADMINISTRATOR = "administrator";
+	private static final String VIEWER = "Bobby";
+	private static final String ADMINISTRATOR = "Armin";
 
 	@Autowired
 	private XsuaaServiceConfiguration xsuaaServiceConfiguration;
@@ -37,12 +36,10 @@ public class TestControllerTest {
 	public void setUp() {
 		jwt_viewer = new JwtGenerator(xsuaaServiceConfiguration.getClientId())
 				.setUserName(VIEWER)
-				.addCustomClaims(buildSystemAttributesClaim("Viewer"))
 				.getTokenForAuthorizationHeader();
 
 		jwt_admin = new JwtGenerator(xsuaaServiceConfiguration.getClientId())
-				.setUserName(VIEWER)
-				.addCustomClaims(buildSystemAttributesClaim("Administrator"))
+				.setUserName(ADMINISTRATOR)
 				.getTokenForAuthorizationHeader();
 	}
 

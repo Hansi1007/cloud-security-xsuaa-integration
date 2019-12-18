@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project
 		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 		xmlns="http://maven.apache.org/POM/4.0.0"
@@ -8,13 +8,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.5.RELEASE</version>
+		<version>2.2.0.RELEASE</version>
 		<relativePath/>
 	</parent>
 
 	<groupId>com.sap.cloud.security.samples</groupId>
 	<artifactId>spring-security-adc-usage</artifactId>
-	<version>1.5.0</version>
+	<version>2.2.0</version>
 	<name>spring-security-adc-usage</name>
 
 	<properties>
@@ -24,41 +24,22 @@
 	</properties>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-		<!-- replaces spring-security-config -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-oauth2-jose</artifactId>
-		</dependency>
-
-		<!-- To modify standard Spring Security's JwtDecoder (aka NimbusJwtDecoderJwkSupport) -->
-		<!-- this is new -->
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-jwt</artifactId>
-			<version>1.0.10.RELEASE</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-oauth2-resource-server</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>com.sap.cloud.security.xsuaa</groupId>
-			<artifactId>spring-xsuaa</artifactId>
-			<version>1.5.0</version>
+			<artifactId>xsuaa-spring-boot-starter</artifactId>
+			<version>2.3.0-SNAPSHOT</version>
 		</dependency>
+		<dependency> <!-- remove with adc boilerplate code -->
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.10</version>
+			<scope>provided</scope>
+		</dependency>
+
 
 		<!-- local testing dependencies - when "uaamock" profile is active -->
 		<dependency>
@@ -84,7 +65,6 @@
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
-
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

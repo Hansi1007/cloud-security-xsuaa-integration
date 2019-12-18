@@ -114,3 +114,11 @@ After deployment, the Application Router will trigger authentication automatical
 * `https://spring-security-adc-usage-web-<ID>.<LANDSCAPE_APPS_DOMAIN>/v1/method` - GET request to execute a method secured with Spring Global Method Security. This method requires `READ` scope.
 
 > Note: https://spring-security-adc-usage-web-<ID>.<LANDSCAPE_APPS_DOMAIN> points to the url of the Application Router. Get all app routes with `cf apps`.
+
+
+## Clean-Up
+```
+cf delete approuter-spring-security-adc-usage
+cf delete cf delete spring-security-adc-usage
+cf delete-service xsuaa-adc
+```

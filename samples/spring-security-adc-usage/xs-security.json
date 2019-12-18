@@ -1,32 +1,50 @@
 {
 	"xsappname": "spring-security-adc-usage",
 	"tenant-mode": "dedicated",
+    "attributes": [{
+        "name": "confidentiality",
+        "description": "Confidentiality, the user has access to",
+        "valueType" : "string"
+      }],
 	"scopes"        : [
-    {
-      "name"        : "$XSAPPNAME.Read",
-      "description" : "Read Permissions."
-    },
-    {
-      "name"        : "$XSAPPNAME.Admin",
-      "description" : "Admin permissions."
-    }
-  ],
-  "role-templates": [
-    {
-      "name"             : "Viewer",
-      "description"      : "View Data",
-      "scope-references" : [
-        "$XSAPPNAME.Read"
-      ]
-    },
-    {
-      "name"                 : "Administrator",
-      "description"          : "View Sensitive Data",
-      "scope-references"     : [
-        "$XSAPPNAME.Read",
-        "$XSAPPNAME.Admin"
-      ]
-    }
+      {
+        "name"        : "$XSAPPNAME.read",
+        "description" : "Read Permissions."
+      },
+      {
+        "name"        : "$XSAPPNAME.admin",
+        "description" : "Admin permissions."
+      }],
+    "role-templates": [
+      {
+        "name"             : "Viewer",
+        "description"      : "View Data",
+        "scope-references" : [
+          "$XSAPPNAME.read"
+        ],
+         "attribute-references":[{
+            "name" : "confidentiality",
+            "default-values" : [
+              "PUBLIC", "INTERNAL"
+            ]
+          }
+        ]
+      },
+      {
+        "name"                 : "Administrator",
+        "description"          : "View Sensitive Data",
+        "scope-references"     : [
+          "$XSAPPNAME.read",
+          "$XSAPPNAME.admin"
+        ],
+        "attribute-references":[{
+          "name" : "confidentiality",
+          "default-values" : [
+            "PUBLIC", "INTERNAL"
+          ]
+        }
+        ]
+      }
   ],
   "role-collections": [
     {
