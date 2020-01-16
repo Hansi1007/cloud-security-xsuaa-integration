@@ -25,8 +25,9 @@ Run maven to package the application
 ```shell
 mvn clean package -DskipTests
 ```
-> Note: As of now the JUnit tests may not run unless you've configured the Url of the Authorization Decision Controller (`ADC_URL`) as part of system environment variable or via the [application-uaamock.properties](src/main/resources/application-uaamock.properties). 
-After successful deployment you can enter the ADC service url or alternatively you can refer to a ADC service that runs locally, e.g. in a docker container.
+> Note: As of now the JUnit tests may not run unless you've launched OPA as part of the docker container.
+> In case the ADC service does not run at `http://localhost:8181` you need to overwrite the `ADC_URL`
+> as part of system environment variable or via the [application-uaamock.properties](src/main/resources/application-uaamock.properties). 
 
 ## Create the XSUAA Service Instance
 Use the [xs-security.json](./xs-security.json) to define the authentication settings and create a service instance
@@ -45,37 +46,37 @@ cf push --vars-file ../vars.yml
 ```
 
 ## Access Authorization Decision Controller (ADC) via Open Policy Agent endpoints
-* `https://adc-service-<ID>.<LANDSCAPE_APPS_DOMAIN>/v1/policies`
-* `https://adc-service-<ID>.<LANDSCAPE_APPS_DOMAIN>/v1/data`
-* `https://adc-service-<ID>.<LANDSCAPE_APPS_DOMAIN>/v1/data/rbac/allow` POST request with Content-Type: application/json and payload:
+* `<ADC_URL>/v1/policies`
+* `<ADC_URL>/v1/data`
+* `<ADC_URL>/v1/data/rbac/allow` POST request with Content-Type: application/json and payload:
 ```
 {
 	"input": {
-		"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzMxOTUvdG9rZW5fa2V5cyIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkifQ.eyJleHRfYXR0ciI6eyJ6ZG4iOiIifSwiemlkIjoidWFhIiwiemRuIjoiIiwiZ3JhbnRfdHlwZSI6InVybjppZXRmOnBhcmFtczpvYXV0aDpncmFudC10eXBlOnNhbWwyLWJlYXJlciIsInVzZXJfbmFtZSI6InZpZXdlciIsIm9yaWdpbiI6InVzZXJJZHAiLCJ4cy5zeXN0ZW0uYXR0cmlidXRlcyI6eyJ4cy5yb2xlY29sbGVjdGlvbnMiOlsiVmlld2VyIl19LCJleHAiOjY5NzQwMzE2MDAsImlhdCI6MTU2NDA2MjI3OSwiZW1haWwiOiJ2aWV3ZXJAdGVzdC5vcmciLCJjaWQiOiJzYi1zcHJpbmctc2VjdXJpdHktYWRjLXVzYWdlIXQxNDg2NiJ9.Xzx1pEWFpVyR8pAn_7RCwJ02bb6iH1HwYSJKgSV3npteeP_qs_8VLHNWDqd9xOagMb0VDpgiDtAcA-lCETElEizD4vNSQuPVRHnSfZxiHuEhonik1BQ2WElQOZ-R0N5RJnaOlpBtNehOiqzkJCWL4STOYGakmMcncwlBCO378dNTa0aIdKD6ftFT3Aq5Vv4ll33cK9N4UmbgHuiyfmVKVI73OxEeLbnKnucOkdj-up2jOk7IVpwlOThGuQFxXcOmdtM9gmmTcr0Popu3-XV6GpAJrIHz4j02QCyMTckQL57VTHxUfp2iTOoUUD0I9On-srNo4hdmpcU_h4lhZv890A",
-		"role": "Viewer"
+		"user": "",
+		"actions": {
+            ...write
+        }
 	}
 }
 ```
-should return true, whereas this payload with same `token` but different `role` in the payload:
+should return true, whereas this payload for the same `user` but different `action`:
 ```
 {
 	"input": {
-		"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzMxOTUvdG9rZW5fa2V5cyIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkifQ.eyJleHRfYXR0ciI6eyJ6ZG4iOiIifSwiemlkIjoidWFhIiwiemRuIjoiIiwiZ3JhbnRfdHlwZSI6InVybjppZXRmOnBhcmFtczpvYXV0aDpncmFudC10eXBlOnNhbWwyLWJlYXJlciIsInVzZXJfbmFtZSI6InZpZXdlciIsIm9yaWdpbiI6InVzZXJJZHAiLCJ4cy5zeXN0ZW0uYXR0cmlidXRlcyI6eyJ4cy5yb2xlY29sbGVjdGlvbnMiOlsiVmlld2VyIl19LCJleHAiOjY5NzQwMzE2MDAsImlhdCI6MTU2NDA2MjI3OSwiZW1haWwiOiJ2aWV3ZXJAdGVzdC5vcmciLCJjaWQiOiJzYi1zcHJpbmctc2VjdXJpdHktYWRjLXVzYWdlIXQxNDg2NiJ9.Xzx1pEWFpVyR8pAn_7RCwJ02bb6iH1HwYSJKgSV3npteeP_qs_8VLHNWDqd9xOagMb0VDpgiDtAcA-lCETElEizD4vNSQuPVRHnSfZxiHuEhonik1BQ2WElQOZ-R0N5RJnaOlpBtNehOiqzkJCWL4STOYGakmMcncwlBCO378dNTa0aIdKD6ftFT3Aq5Vv4ll33cK9N4UmbgHuiyfmVKVI73OxEeLbnKnucOkdj-up2jOk7IVpwlOThGuQFxXcOmdtM9gmmTcr0Popu3-XV6GpAJrIHz4j02QCyMTckQL57VTHxUfp2iTOoUUD0I9On-srNo4hdmpcU_h4lhZv890A",
-		"role": "Administrator"
+		"user": "",
+		"actions": {
+            ...write
+        }
 	}
 }
 ```
-should return false, as the token does not contain a `Administrator` role collection. 
+should return false, as the user has no policy assigned with rule (action) `write`. 
 
 Apply also a check on scope or attribute values using a token that simulates an Admin user:
 ```
 {
 	"input": {
-		"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzMxOTUvdG9rZW5fa2V5cyIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkifQ.eyJleHRfYXR0ciI6eyJ6ZG4iOiIifSwiemlkIjoidWFhIiwiemRuIjoiIiwiZ3JhbnRfdHlwZSI6InVybjppZXRmOnBhcmFtczpvYXV0aDpncmFudC10eXBlOnNhbWwyLWJlYXJlciIsInVzZXJfbmFtZSI6InZpZXdlciIsIm9yaWdpbiI6InVzZXJJZHAiLCJ4cy5zeXN0ZW0uYXR0cmlidXRlcyI6eyJ4cy5yb2xlY29sbGVjdGlvbnMiOlsiQWRtaW5pc3RyYXRvciJdfSwiZXhwIjo2OTc0MDMxNjAwLCJpYXQiOjE1NjQwNjIyODAsImVtYWlsIjoidmlld2VyQHRlc3Qub3JnIiwiY2lkIjoic2Itc3ByaW5nLXNlY3VyaXR5LWFkYy11c2FnZSF0MTQ4NjYifQ.qzIf2Kfg5xTaVj1FtQDRfQjNzOFcq4NQi7bU-ECeLPyWXLg8ucttMpwXSLcPMxKf6IcmVyLjRsf08LS_qLmUO4MYNXzoNwPMmw6oRig8y2HQ8j3GCE3uaCBrmSUJi5cvnI1e4CpceygbRBPUMg7l3QhLMmcOtUYe4c2VSOCb7Haf4xS6Idhw7rHaExrTSA94zx3I7peG3TJtjDHNPeANfiMlHNWVBuq49zQvlE9x_ZniIK_Mie4-UlExrRCL0ep6ty_FfGVZlGb1uBm3KPom-LKvMYlgD0QIGHuVoSgbTwwx_xGJvpFe8tRp95UlbD8vITbtVe0Fsu4VwdpnBv4h8g",
-		"scope": "spring-security-adc-usage!t14866.Admin",
-		"role": "Administrator",
-		"attributeName": "confidentiality_level",
-		"attributeValue": "PUBLIC"
+		"user": ""
 	}
 }
 ```
@@ -84,10 +85,11 @@ Find the current API documentation of OPA (Open Policy Agent) [here](https://www
 
 ## [OPTIONAL] Configure the local environment
 You need to configure the Url of the Authorization Decision Controller (`ADC_URL`) as part of system environment variable or via the [application-uaamock.properties](src/main/resources/application-uaamock.properties). 
-You can enter the url of the previous deployed ADC service or, alternatively you can refer to a ADC service that runs locally, e.g. in a docker container.
+You can enter the url of the ADC service that runs locally, e.g. in a docker container.
 
 ## [OPTIONAL] Test locally
 ```
+docker-compose up -d
 mvn spring-boot:run -Dspring-boot.run.profiles=cloud,uaamock
 ```
     
@@ -101,6 +103,8 @@ Alternatively you can also debug the [TestControllerTest](src/test/java/sample.s
 ## Cockpit administration tasks: Assign Policy to your User
 When accessing your application endpoints on Cloud Foundry via the Application Router, you get redirected to a login-screen to authenticate yourself. 
 But your application will respond with error status code `403` (`unauthorized`) in case you do not have any Policies assigned. 
+
+!!!TODO!!!! 
 That's why you need to assign as part of your Identity Provider, e.g. SAP ID Service the deployed Role Collection(s) such as `Viewer` or `Administrator` to your user as depicted in the screenshot below and as documented [here](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/9e1bf57130ef466e8017eab298b40e5e.html).
 
 ![](../images/SAP_CP_Cockpit_AssignRoleCollectionToUser.png)
@@ -112,7 +116,7 @@ Further up-to-date information you can get on sap.help.com:
 ## Access the application
 After deployment, the Application Router will trigger authentication automatically when you access one of the following URLs:
 
-* `https://spring-security-adc-usage-web-<ID>.<LANDSCAPE_APPS_DOMAIN>/v1/method` - GET request to execute a method secured with Spring Global Method Security. This method requires `READ` scope.
+* `https://spring-security-adc-usage-web-<ID>.<LANDSCAPE_APPS_DOMAIN>/v1/method` - GET request to execute a method secured with Spring Global Method Security. This method requires a policy to grant action = `read`.
 
 > Note: https://spring-security-adc-usage-web-<ID>.<LANDSCAPE_APPS_DOMAIN> points to the url of the Application Router. Get all app routes with `cf apps`.
 
