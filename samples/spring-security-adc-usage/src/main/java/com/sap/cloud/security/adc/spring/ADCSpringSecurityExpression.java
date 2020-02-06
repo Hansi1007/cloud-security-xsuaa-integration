@@ -44,26 +44,15 @@ public class ADCSpringSecurityExpression extends SecurityExpressionRoot implemen
 	//        return "#oauth2.hasScope('" + getGlobalScope(localScope) + "')";
 	//    }
 
-	public boolean action(String action) {
+	public boolean readAll(String action) {
 		// TODO IAS Support
 
 		Token token = SpringSecurityContext.getToken();
 
-		OpenPolicyAgentRequest request = new OpenPolicyAgentRequest(token.getUsername())
-						.withAnyAction(action);
+		OpenPolicyAgentRequest request = new OpenPolicyAgentRequest("readAll", token.getEmail()) // TODO update to getUserName()?
+						.withAction(action);
 		boolean isAuthorized = checkAuthorization(request);
-		logger.info("Is user {} authorized for any action '{}' ? {}", token.getUsername(), action, isAuthorized);
-
-		return isAuthorized;
-	}
-
-	public boolean attributeValue(String attributeName, String attributeValue) {
-		Token token = SpringSecurityContext.getToken();
-
-		OpenPolicyAgentRequest request = new OpenPolicyAgentRequest(token.getUsername())
-				.withAttributeValue(attributeName, attributeValue);
-		boolean isAuthorized = checkAuthorization(request);
-		logger.info("Has user attribute '{}' = '{}'? {}", attributeName, attributeValue, isAuthorized);
+		logger.info("Has user {} authorization with policy '{}' and action '{}' ? {}", token.getEmail(), "readAll", action, isAuthorized);
 
 		return isAuthorized;
 	}

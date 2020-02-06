@@ -3,7 +3,6 @@ package com.sap.cloud.security.samples;
 import com.sap.cloud.security.xsuaa.XsuaaServiceConfiguration;
 import com.sap.cloud.security.xsuaa.test.JwtGenerator;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
+import java.util.Collections;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,22 +24,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class TestControllerTest {
 
-	private String jwt_viewer;
-	private String jwt_admin;
-	private static final String VIEWER = "Bobby";
-	private static final String ADMINISTRATOR = "Armin";
+	private String jwtBob;
+	private String jwtAlice;
 
 	@Autowired
 	private XsuaaServiceConfiguration xsuaaServiceConfiguration;
 
 	@Before
 	public void setUp() {
-		jwt_viewer = new JwtGenerator(xsuaaServiceConfiguration.getClientId())
-				.setUserName(VIEWER)
+		jwtBob = new JwtGenerator(xsuaaServiceConfiguration.getClientId())
+				.addCustomClaims(Collections.singletonMap("email", "Bob"))
 				.getTokenForAuthorizationHeader();
 
-		jwt_admin = new JwtGenerator(xsuaaServiceConfiguration.getClientId())
-				.setUserName(ADMINISTRATOR)
+		jwtAlice = new JwtGenerator(xsuaaServiceConfiguration.getClientId())
+				.addCustomClaims(Collections.singletonMap("email", "Alice"))
 				.getTokenForAuthorizationHeader();
 	}
 
@@ -54,17 +53,16 @@ public class TestControllerTest {
 	}
 
 	@Test
-	public void readWithReadPermission_200() throws Exception {
+	public void readWith_Bob_403() throws Exception {
 		mockMvc.perform(get("/v1/method")
-				.with(bearerToken(jwt_viewer)))
-				.andExpect(status().isOk());
+				.with(bearerToken(jwtBob)))
+				.andExpect(status().isForbidden());
 	}
 
 	@Test
-	@Ignore
-	public void readWithAdminPermission_200() throws Exception {
+	public void readWith_Alice_readAll_200() throws Exception {
 		mockMvc.perform(get("/v1/method")
-				.with(bearerToken(jwt_admin)))
+				.with(bearerToken(jwtAlice)))
 				.andExpect(status().isOk());
 	}
 

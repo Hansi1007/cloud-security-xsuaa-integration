@@ -14,7 +14,7 @@ public class TestController {
      * method be called. Otherwise a 403 error will be returned.
      */
     @GetMapping(value = "/v1/method")
-    @PreAuthorize("action('read')") // AND confidentiality=CONFIDENTIAL
+    @PreAuthorize("readAll('read')")
     public String callMethodRemotely() {
         return "Read-protected method called! " + SpringSecurityContext.getToken().getUsername();
     }
