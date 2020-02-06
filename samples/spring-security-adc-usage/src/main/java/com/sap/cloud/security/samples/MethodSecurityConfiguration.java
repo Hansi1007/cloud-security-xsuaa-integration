@@ -1,4 +1,4 @@
-package sample.spring.adc;
+package com.sap.cloud.security.samples;
 
 import com.sap.cloud.security.adc.client.ADCService;
 import com.sap.cloud.security.adc.client.SpringADCService;

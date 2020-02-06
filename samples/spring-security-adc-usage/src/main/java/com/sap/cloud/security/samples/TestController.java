@@ -1,4 +1,4 @@
-package sample.spring.adc;
+package com.sap.cloud.security.samples;
 
 import com.sap.cloud.security.xsuaa.token.SpringSecurityContext;
 import org.springframework.security.access.prepost.PreAuthorize;

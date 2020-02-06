@@ -1,2 +1,2 @@
-org.springframework.boot.env.EnvironmentPostProcessor=sample.spring.adc.mock.XsuaaMockPostProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=com.sap.cloud.security.samples.mock.XsuaaMockPostProcessor
 

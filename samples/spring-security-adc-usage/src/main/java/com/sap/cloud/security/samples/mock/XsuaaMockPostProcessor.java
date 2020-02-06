@@ -1,4 +1,4 @@
-package sample.spring.adc.mock;
+package com.sap.cloud.security.samples.mock;
 
 import com.sap.cloud.security.xsuaa.mock.XsuaaMockWebServer;
 import org.springframework.beans.factory.DisposableBean;

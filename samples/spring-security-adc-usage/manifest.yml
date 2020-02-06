@@ -4,12 +4,12 @@
 # If the route is occupied, you might need to change ID in ../vars.yml
 applications:
 # The sample application.
-- name: spring-security-adc-usage
+- name: spring-security-cas-usage
   instances: 1
   memory: 800M
   routes:
-    - route: spring-security-adc-usage-((ID)).((LANDSCAPE_APPS_DOMAIN))
-  path: target/spring-security-adc-usage.jar
+    - route: spring-security-cas-usage-((ID)).((LANDSCAPE_APPS_DOMAIN))
+  path: target/spring-security-cas-usage.jar
   buildpacks:
     - https://github.com/saescha/opa-builpack-PoC.git#bash
     - java_buildpack

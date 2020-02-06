@@ -13,9 +13,9 @@
 	</parent>
 
 	<groupId>com.sap.cloud.security.samples</groupId>
-	<artifactId>spring-security-adc-usage</artifactId>
+	<artifactId>spring-security-cas-usage</artifactId>
 	<version>2.4.3-SNAPSHOT</version>
-	<name>spring-security-adc-usage</name>
+	<name>spring-security-cas-usage</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

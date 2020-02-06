@@ -116,7 +116,7 @@ Copy the `id_token` into your clipboard.
 - Access the application via `curl`. Don't forget to fill the placeholders.
 ```
 curl -X GET \
-  https://spring-security-adc-usage-<<ID>>.<<LANDSCAPE_APPS_DOMAIN>>/v1/method \
+  https://spring-security-cas-usage-<<ID>>.<<LANDSCAPE_APPS_DOMAIN>>/v1/method \
   -H 'Authorization: Bearer <<your id_token>>'
 ```
 
@@ -130,6 +130,6 @@ You ('<your email>') are authenticated and can access the application.
 ## Clean-Up
 Finally delete your application and your service instances using the following commands:
 ```
-cf delete cf delete spring-security-adc-usage
+cf delete cf delete spring-security-cas-usage
 cf delete-service spring-security-adc-ias
 ```
