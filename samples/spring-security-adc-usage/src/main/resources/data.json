@@ -9,6 +9,9 @@
         ],
         "user/ldap/nena.raab@sap.com": [
             "read"
+        ],
+        "nena.raab@sap.com": [
+            "read"
         ]
     }
 }

@@ -1,5 +1,6 @@
 package sample.spring.adc;
 
+import com.sap.cloud.security.xsuaa.token.SpringSecurityContext;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ public class TestController {
     @GetMapping(value = "/v1/method")
     @PreAuthorize("action('read')") // AND confidentiality=CONFIDENTIAL
     public String callMethodRemotely() {
-        return "Read-protected method called!";
+        return "Read-protected method called! " + SpringSecurityContext.getToken().getUsername();
     }
 
 }

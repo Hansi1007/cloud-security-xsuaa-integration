@@ -20,7 +20,7 @@ public class MethodSecurityConfiguration extends GlobalMethodSecurityConfigurati
 	@Autowired(required = false)
 	private RestTemplate restTemplate;
 
-	@Value("${ADC_URL:http://localhost:8181}")
+	@Value("${OPA_URL:http://localhost:8181}")
 	private String adcUrl;
 
 	@Override

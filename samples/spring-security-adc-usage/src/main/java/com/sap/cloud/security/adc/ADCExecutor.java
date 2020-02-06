@@ -28,8 +28,10 @@ public class ADCExecutor {
     }
 
     public void start() throws IOException {
-        // TODO debug enable
-        adcProcess = Runtime.getRuntime().exec("/home/vcap/app/opa run -s /home/vcap/app/BOOT-INF/classes/data.json /home/vcap/app/BOOT-INF/classes/rbac.rego --log-level=debug");
+        ProcessBuilder pb = new ProcessBuilder( "/bin/bash", System.getenv("OPA_START") );
+
+        adcProcess = pb.start();
+
         new Thread(new DumpInputRunnable(adcProcess, adcProcess.getInputStream())).start();
         new Thread(new DumpInputRunnable(adcProcess, adcProcess.getErrorStream())).start();
     }

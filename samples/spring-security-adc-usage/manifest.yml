@@ -11,27 +11,11 @@ applications:
     - route: spring-security-adc-usage-((ID)).((LANDSCAPE_APPS_DOMAIN))
   path: target/spring-security-adc-usage.jar
   buildpacks:
-    - https://github.com/saescha/opa-builpack-PoC.git
+    - https://github.com/saescha/opa-builpack-PoC.git#bash
     - java_buildpack
   services:
     - xsuaa-adc
   env:
     JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {headroom: 10}]'
-
-# Application Router as reverse proxy
-- name: approuter-spring-security-adc-usage
-  path: approuter
-  buildpacks:
-    - nodejs_buildpack
-  memory: 128M
-  routes:
-    - route: spring-security-adc-usage-web-((ID)).((LANDSCAPE_APPS_DOMAIN))
-  services:
-    - xsuaa-adc
-  env:
-    destinations: >
-      [
-        {"name":"token-destination",
-         "url":"https://spring-security-adc-usage-((ID)).((LANDSCAPE_APPS_DOMAIN))",
-         "forwardAuthToken": true}
-      ]
+    BUNDLE_PROVIDER:  https://abp.cfapps.sap.hana.ondemand.com/
+    BUNDLE_PATH: sap/cas/v1/bundles/amsBundle.tar.gz
