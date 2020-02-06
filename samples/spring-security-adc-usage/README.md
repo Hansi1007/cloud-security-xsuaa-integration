@@ -86,7 +86,7 @@ mvn clean package -DskipTests
 ## Create the ias service instance
 Use the ias service broker and create a service instance (don't forget to replace the placeholders)
 ```shell
-cf create-service identity-beta default spring-security-adc-ias -c '{"redirect_uris": ["https://spring-security-adc-ias-((ID)).((LANDSCAPE_APPS_DOMAIN))/uaa/login/callback/my-oidc"]}'
+cf create-service identity-beta default spring-security-cas-ias
 ```
 
 ## Configure the manifest
@@ -99,10 +99,10 @@ Deploy the application using cf push. It will expect 1 GB of free memory quota.
 cf push --vars-file ../vars.yml
 ```
 
-## Access the application via Curl
+## Access the application via cURL
 After successful deployment, when accessing your application endpoints on Cloud Foundry, you get redirected to a login-screen to authenticate yourself. But your application will respond with error status code `403` (`unauthorized`) in case you do not have any Policies assigned.
 
-- Get an id token via `curl`. Make sure that you replace the placeholders `clientid`, `clientsecret` and `url` (without `https://` !!!) according to the service configuration that are stored as system environment variable `VCAP_SERVICES.identity-beta.credentials`. You can get them using `cf env spring-security-adc-ias`. 
+- Get an id token via `cURL`. Make sure that you replace the placeholders `clientid`, `clientsecret` and `url` (without `https://` !!!) according to the service configuration that are stored as system environment variable `VCAP_SERVICES.identity-beta.credentials`. You can get them using `cf env spring-security-cas-ias`. 
 
 ```
 curl -X POST \
@@ -131,5 +131,5 @@ You ('<your email>') are authenticated and can access the application.
 Finally delete your application and your service instances using the following commands:
 ```
 cf delete cf delete spring-security-cas-usage
-cf delete-service spring-security-adc-ias
+cf delete-service spring-security-cas-ias
 ```

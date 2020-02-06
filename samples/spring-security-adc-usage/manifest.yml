@@ -14,7 +14,7 @@ applications:
     - https://github.com/saescha/opa-builpack-PoC.git#bash
     - java_buildpack
   services:
-    - xsuaa-adc
+    - spring-security-cas-ias
   env:
     JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {headroom: 10}]'
     BUNDLE_PROVIDER:  https://abp.cfapps.sap.hana.ondemand.com/
